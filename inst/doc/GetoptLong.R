@@ -37,11 +37,20 @@ Rscript test.R -n 4 --verbose")
 ###################################################
 ### code chunk number 4: GetoptLong.Rnw:84-85
 ###################################################
-cat("length|size|l=s@")
+cat("length|size|l=i@")
 
 
 ###################################################
-### code chunk number 5: GetoptLong.Rnw:211-221 (eval = FALSE)
+### code chunk number 5: GetoptLong.Rnw:96-100
+###################################################
+cat("Rscript foo.R --length 1
+Rscript foo.R -len 1
+Rscript foo.R --size 1
+Rscript foo.R -l 1")
+
+
+###################################################
+### code chunk number 6: GetoptLong.Rnw:219-229 (eval = FALSE)
 ###################################################
 ## options('GetoptLong.startingMsg' = '
 ## Usage: Rscript test.R [options]
@@ -56,7 +65,7 @@ cat("length|size|l=s@")
 
 
 ###################################################
-### code chunk number 6: GetoptLong.Rnw:226-245
+### code chunk number 7: GetoptLong.Rnw:234-253
 ###################################################
 cat("
 $~\\> Rscript command.R --help
@@ -80,7 +89,7 @@ Please contact author@gmail.com for comments
 
 
 ###################################################
-### code chunk number 7: GetoptLong.Rnw:250-254
+### code chunk number 8: GetoptLong.Rnw:258-262
 ###################################################
 cat("
 $~\\> Rscript command.R --version
@@ -89,14 +98,14 @@ $~\\> Rscript command.R --version
 
 
 ###################################################
-### code chunk number 8: GetoptLong.Rnw:261-263 (eval = FALSE)
+### code chunk number 9: GetoptLong.Rnw:269-271 (eval = FALSE)
 ###################################################
 ## options("GetoptLong.Config" = "bundling")
 ## options("GetoptLong.Config" = c("no_ignore_case", "bundling"))
 
 
 ###################################################
-### code chunk number 9: GetoptLong.Rnw:268-271
+### code chunk number 10: GetoptLong.Rnw:276-279
 ###################################################
 cat("-a -b -c  -abc
 -s 24 -s24 -s=24
@@ -104,7 +113,7 @@ cat("-a -b -c  -abc
 
 
 ###################################################
-### code chunk number 10: GetoptLong.Rnw:281-282
+### code chunk number 11: GetoptLong.Rnw:289-290
 ###################################################
 cat("Rscript test.R -a -b -c -- /your/perl/bin/perl")
 

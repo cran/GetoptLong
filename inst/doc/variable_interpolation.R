@@ -32,7 +32,7 @@ qqcat("region = (@{region[1]}, @{region[2]}), value = @{value}, name = '@{name}'
 options("cat_prefix" = "[INFO] ")
 qqcat("This is a message")
 
-options("cat_prefix" = function(x) format(Sys.time(), "[%Y-%m-%d %H:%M:%S] "))
+options("cat_prefix" = function() format(Sys.time(), "[%Y-%m-%d %H:%M:%S] "))
 qqcat("This is a message")
 
 options("cat_prefix" = NULL)

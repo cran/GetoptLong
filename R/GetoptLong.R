@@ -15,6 +15,12 @@
 # please see vignette.
 GetoptLong = function(spec, help = TRUE, version = TRUE, envir = parent.frame(), argv_str = NULL) {
 	
+	if(get_scriptname() == "foo.R") {
+		.IS_UNDER_COMMAND_LINE = FALSE
+	} else {
+		.IS_UNDER_COMMAND_LINE = TRUE
+	}
+
 	# to test whether the script is run under command-line or in R interactive environment
 	if(.IS_UNDER_COMMAND_LINE || is.null(argv_str)) {
 		OUT = stderr()
@@ -109,7 +115,7 @@ GetoptLong = function(spec, help = TRUE, version = TRUE, envir = parent.frame(),
 	test_long_name = grepl("^[a-zA-Z_\\.][a-zA-Z0-9_\\.]*$", long_name) 
 		
 	if(!all(test_long_name)) {
-		cat("First name in option names can only be valid R variable names which only use numbers, letters,\n'.' and '_' (It should match /^[a-zA-Z_\\.][a-zA-Z0-9_\\.]+$/).", file = OUT)
+		cat("First name in option names can only be valid R variable names which only\nuse numbers, letters,'.' and '_' (It should match\n/^[a-zA-Z_\\.][a-zA-Z0-9_\\.]+$/).", file = OUT)
 		qqcat(" Following option name@{ifelse(sum(test_long_name)==1, ' is', 's are')}\nnot valid:\n\n", file = OUT)
 		for(k in seq_along(test_long_name)) {
 			if(!test_long_name[k]) qqcat("  @{spec[k, 1]}\n", file = OUT)
@@ -215,6 +221,7 @@ GetoptLong = function(spec, help = TRUE, version = TRUE, envir = parent.frame(),
 		}
 	}
 	
+	# check default values
 	for(i in seq_len(nrow(spec))) {
 		if(is_mandatory[i] && exists(long_name[i], envir = envir)) {
 			tmp = get(long_name[i], envir = envir)
@@ -224,8 +231,51 @@ GetoptLong = function(spec, help = TRUE, version = TRUE, envir = parent.frame(),
 				next
 			}
 			
-			if(!mode(tmp) %in% c("numeric", "character", "NULL", "logical", "complex")) {
-				qqcat("@{long_name[i]} is mandatory, and also detect in envoking environment you have already \ndefined `@{long_name[i]}`. Please make sure `@{long_name[i]}` should only be a simple vector or NULL.\n", file = OUT)
+			# if option is specified as a list (ss=%)
+			if(grepl("%$", spec[i, 1])) {
+				# if default value is not a list
+				if(! is.list(tmp)) {
+					qqcat("@{long_name[i]} is mandatory, and also detect in evoking environment you have already \ndefined `@{long_name[i]}`. Since it is defined as a named option, please\nmake sure default value of `@{long_name[i]}` is a list.\n", file = OUT)
+					if(.IS_UNDER_COMMAND_LINE) {
+						print_help_msg(spec, file = OUT, help = help, version = version)
+					}
+
+					if(.IS_UNDER_COMMAND_LINE) {
+						q(save = "no", status = 127)
+					} else if(!is.null(argv_str)) {  # under test
+						return(invisible(NULL))
+					} else {
+						stop("You have an error.\n")
+					}
+				} else if(is.null(names(tmp))) {
+					qqcat("@{long_name[i]} is mandatory, and also detect in evoking environment you have already \ndefined `@{long_name[i]}`. Since it is defined as a named option, please\nmake sure default value of `@{long_name[i]}` is a list with names.\n", file = OUT)
+					if(.IS_UNDER_COMMAND_LINE) {
+						print_help_msg(spec, file = OUT, help = help, version = version)
+					}
+
+					if(.IS_UNDER_COMMAND_LINE) {
+						q(save = "no", status = 127)
+					} else if(!is.null(argv_str)) {  # under test
+						return(invisible(NULL))
+					} else {
+						stop("You have an error.\n")
+					}
+				} else if(!(all(sapply(tmp, is_simple_vector)))) {
+					qqcat("@{long_name[i]} is mandatory, and also detect in evoking environment you have already \ndefined `@{long_name[i]}`. Since it is defined as a named option, please\nmake sure default value of `@{long_name[i]}` is a list containing simple vectors.\n", file = OUT)
+					if(.IS_UNDER_COMMAND_LINE) {
+						print_help_msg(spec, file = OUT, help = help, version = version)
+					}
+
+					if(.IS_UNDER_COMMAND_LINE) {
+						q(save = "no", status = 127)
+					} else if(!is.null(argv_str)) {  # under test
+						return(invisible(NULL))
+					} else {
+						stop("You have an error.\n")
+					}
+				}
+			} else if(! is_simple_vector(tmp)) {
+				qqcat("@{long_name[i]} is mandatory, and also detect in evoking environment you have already \ndefined `@{long_name[i]}`. Please make sure default value of `@{long_name[i]}` should only be a simple vector or NULL.\n", file = OUT)
 				if(.IS_UNDER_COMMAND_LINE) {
 					print_help_msg(spec, file = OUT, help = help, version = version)
 				}
@@ -237,7 +287,7 @@ GetoptLong = function(spec, help = TRUE, version = TRUE, envir = parent.frame(),
 				} else {
 					stop("You have an error.\n")
 				}
-			}	
+			}
 		}
 	}
 	
@@ -245,6 +295,10 @@ GetoptLong = function(spec, help = TRUE, version = TRUE, envir = parent.frame(),
 	export_parent_env(opt, envir = envir)
 	
 	return(invisible(opt))
+}
+
+is_simple_vector = function(obj) {
+	mode(obj) %in% c("numeric", "character", "NULL", "logical", "complex")
 }
 
 # this function will be improved later

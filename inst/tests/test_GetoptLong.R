@@ -115,7 +115,14 @@ test_that("test `tag=i%`", {
 	expect_that({tag = list(1);GetoptLong(spec, argv_str = "--tag name=1")},   prints_text("with names")); rm(tag)
 	tag = list(name = 2)
 	GetoptLong(spec, argv_str = ""); expect_that(tag, is_identical_to(list(name = 2))); rm(tag)
+	tag = list(name = 2)
 	GetoptLong(spec, argv_str = "--tag name=1"); expect_that(tag, is_identical_to(list(name = 1))); rm(tag)
+
+	tag = list(name = 2, eman = 3)
+	GetoptLong(spec, argv_str = "--tag name=1"); expect_that(tag, is_identical_to(list(name = 1, eman = 3))); rm(tag)
+	tag = list(name = 2, eman = 3)
+	GetoptLong(spec, argv_str = "--tag name=1 --tag eman=2 --tag sth=4"); expect_that(tag, is_identical_to(list(name = 1, eman = 2, sth = 4))); rm(tag)
+
 })
 
 test_that("test `tag=i{2}`", {
@@ -181,7 +188,7 @@ test_that("test `verbose!`", {
 })
 
 test_that("test other configurations", {
-	options("GetoptLong.Config" = "bundling")
+	GetoptLong.options("config" = "bundling")
 	spec = c(
 		"red|r", "using red",
 		"blue|b", "using blue",
@@ -210,9 +217,7 @@ test_that("test default values", {
 
 # message
 
-options("GetoptLong.startingMsg" = NULL)
-options("GetoptLong.endingMsg" = NULL)
-
+GetoptLong.options(RESET = TRUE)
 
 test_that("test `version` and `help` options", {
 
@@ -227,14 +232,11 @@ test_that("test `version` and `help` options", {
 	
 	expect_that(GetoptLong(spec, argv_str = "--help"), prints_text("Usage"))
 
-	options("GetoptLong.startingMsg" = "
-Usage:
-  Rscript xx.R --tag
+	GetoptLong.options("startingMsg" = "
 Description of this script
-
 ")
 
-	options("GetoptLong.endingMsg" = "
+	GetoptLong.options("endingMsg" = "
 Report bugs to xxx@xx.xx
 ")
 	expect_that(GetoptLong(spec, argv_str = "--help"), prints_text("Report bugs"))

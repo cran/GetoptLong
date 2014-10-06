@@ -143,10 +143,10 @@ GetoptLong = function(spec, help = TRUE, version = TRUE, envir = parent.frame(),
 	
 	cmd = qq("\"@{perl_bin}\" \"@{perl_script}\" @{ARGV_string}")
 	res = system(cmd, intern = TRUE)
+	res = as.vector(res)
 	
 	# if you specified wrong arguments
 	if(length(res)) {
-
 		qqcat("@{res}\n", file = OUT)
 		
 		if(.IS_UNDER_COMMAND_LINE) {
@@ -231,10 +231,14 @@ GetoptLong = function(spec, help = TRUE, version = TRUE, envir = parent.frame(),
 				next
 			}
 			
+			if(is.null(tmp)) {
+				next
+			}
+			
 			# if option is specified as a list (ss=%)
 			if(grepl("%$", spec[i, 1])) {
 				# if default value is not a list
-				if(! is.list(tmp)) {
+				if(!is.list(tmp)) {
 					qqcat("@{long_name[i]} is mandatory, and also detect in evoking environment you have already \ndefined `@{long_name[i]}`. Since it is defined as a named option, please\nmake sure default value of `@{long_name[i]}` is a list.\n", file = OUT)
 					if(.IS_UNDER_COMMAND_LINE) {
 						print_help_msg(spec, file = OUT, help = help, version = version)
@@ -324,10 +328,17 @@ generate_perl_script = function(spec, json_file) {
 	perl_code = c(perl_code, qq("BEGIN { push (@INC, '@{perl_lib}'); }"))
 	perl_code = c(perl_code, qq(""))
 	perl_code = c(perl_code, qq("use strict;"))
-	if(is.null(options("GetoptLong.Config")[[1]])) {
+	
+	config = NULL
+	if(!is.null(options("GetoptLong.Config")[[1]]) && is.null(GetoptLong.options("config"))) {
+		config = options("GetoptLong.Config")[[1]]
+	} else {
+		config = GetoptLong.options("config")
+	}
+	if(is.null(config)) {
 		perl_code = c(perl_code, qq("use Getopt::Long;"))
 	} else {
-		perl_code = c(perl_code, qq("use Getopt::Long qw(:config @{paste(options('GetoptLong.Config')[[1]], collapse = ' ')});"))
+		perl_code = c(perl_code, qq("use Getopt::Long qw(:config @{paste(config, collapse = ' ')});"))
 	}
 	
 	perl_code = c(perl_code, qq("use JSON;"))
@@ -437,19 +448,33 @@ print_help_msg = function(spec, file = stderr(), help = TRUE, version = TRUE) {
 		spec = rbind(spec, c("version", "Print version information and exit"))
 	}
 	
-	if(!is.null(options("GetoptLong.startingMsg")[[1]])) {
-		cat(options("GetoptLong.startingMsg")[[1]], file = file)
+	startingMsg = NULL
+	if(!is.null(options("GetoptLong.startingMsg")[[1]]) && is.null(GetoptLong.options("startingMsg"))) {
+		startingMsg = options("GetoptLong.startingMsg")[[1]]
 	} else {
-        script_name = basename(get_scriptname())
-        qqcat("Usage: Rscript @{script_name} [options]\n\n", file = file)
-    }
+		startingMsg = GetoptLong.options("startingMsg")
+	}
 	
+	if(!is.null(startingMsg)) {
+		cat(startingMsg, file = file)
+	}
+	
+    script_name = basename(get_scriptname())
+    qqcat("Usage: Rscript @{script_name} [options]\n\n", file = file)
+    	
 	for(i in seq_len(nrow(spec))) {
 		print_single_option(spec[i, 1], spec[i, 2], file = file)
 	}
 	
-	if(!is.null(options("GetoptLong.endingMsg")[[1]])) {
-		cat(options("GetoptLong.endingMsg")[[1]], file = file)
+	endingMsg = NULL
+	if(!is.null(options("GetoptLong.endingMsg")[[1]]) && is.null(GetoptLong.options("endingMsg"))) {
+		endingMsg = options("GetoptLong.endingMsg")[[1]]
+	} else {
+		endingMsg = GetoptLong.options("endingMsg")
+	}
+	
+	if(!is.null(endingMsg)) {
+		cat(endingMsg, file = file)
 	}
 }
 
@@ -592,7 +617,15 @@ export_parent_env = function(opt, envir = parent.frame()) {
 		if(o == "help" || o == "version") {
 			next
 		}
-		assign(o, opt[[o]], envir = envir)
+
+		# if the options is a named list, those default elements that are not specified on command-line will be retained
+		if(is.list(opt[[o]]) && exists(o, envir = envir)) {
+			ol = get(o, envir = envir)  # default value
+			ol[ names(opt[[o]]) ] = opt[[o]]
+			assign(o, ol, envir = envir)
+		} else {    # for simple vector, just overwrite it
+			assign(o, opt[[o]], envir = envir)
+		}
 	}
 
 	# defined with default values while not specified in command line

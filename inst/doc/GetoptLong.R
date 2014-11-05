@@ -29,7 +29,7 @@
 #  VERSION = "0.0.1"
 #  GetoptLong(...)
 
-## ----eval = FALSE, echo = TRUE, include = FALSE--------------------------
+## ----eval = FALSE, echo = TRUE, results = 'hide'-------------------------
 #  GetoptLong.options("config" = "bundling")
 #  GetoptLong.options("config" = c("no_ignore_case", "bundling"))
 

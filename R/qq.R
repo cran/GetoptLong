@@ -58,7 +58,9 @@ qq = function(text, envir = parent.frame(), code.pattern = NULL, collapse = TRUE
             # replace the code with its value
             return_value = lapply(code, function(c) {
 				x = eval(parse(text = c), envir = e)
-				if(length(x) == 0 || is.null(x)) {
+                if(is.null(x)) {
+                    return("")
+				} else if(length(x) == 0) {
 					return("")
 				} else {
 					if(is.factor(x)) {
@@ -68,9 +70,9 @@ qq = function(text, envir = parent.frame(), code.pattern = NULL, collapse = TRUE
 				}
 			})  # anony function is the first level parent
 			
-			is_return_value_vector = sapply(return_value, function(r) is.vector(r) & !is.list(r))
+			is_return_value_vector = sapply(return_value, function(r) is.atomic(r))
 			if(! all(is_return_value_vector)) {
-				stop("All your codes should only return simple vectors.\n")
+				stop("All your codes should only return simple atomic vectors.\n")
 			}
 			
             # length of the return value

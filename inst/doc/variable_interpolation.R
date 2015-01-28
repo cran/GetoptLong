@@ -41,9 +41,9 @@ qqcat("This is a message")
 qq.options(RESET = TRUE)
 
 ## ----eval = FALSE--------------------------------------------------------
-#  GetoptLongc(
+#  GetoptLong(c(
 #      "verbose", "Print message"
-#  )
+#  ))
 #  qq.options("cat_verbose" = verbose)
 #  qqcat("This is a message")
 

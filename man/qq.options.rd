@@ -1,14 +1,10 @@
 \name{qq.options}
 \alias{qq.options}
 \title{
-Global options for \code{qq} related functions  
-
-
+Global options for \code{qq} related functions
 }
 \description{
-Global options for \code{qq} related functions  
-
-
+Global options for \code{qq} related functions
 }
 \usage{
 qq.options(..., RESET = FALSE, READ.ONLY = NULL)
@@ -21,13 +17,11 @@ qq.options(..., RESET = FALSE, READ.ONLY = NULL)
 
 }
 \details{
-Supported options are following:  
+Supported options are following:
 
 \describe{
   \item{cat_prefix}{prefix of the string which is printed by \code{\link{qqcat}}}
   \item{cat_verbose}{whether to print text by \code{\link{qqcat}}}
   \item{code.pattern}{code pattern for variable interpolation}
 }
-
-
 }

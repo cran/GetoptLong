@@ -76,3 +76,6 @@
 ## ----eval = FALSE, echo = TRUE, results = 'makeup', highlight = FALSE----
 #  ~\> Rscript test.R -a -b -c -- /your/perl/bin/perl
 
+## ----eval = FALSE, echo = TRUE-------------------------------------------
+#  source("test.R", argv = "--number 4 --cutoff 0.01 --verbose")
+

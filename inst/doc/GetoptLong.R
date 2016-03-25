@@ -2,21 +2,11 @@
 #  library(GetoptLong)
 #  
 #  cutoff = 0.05
-#  GetoptLong(matrix(c(
+#  GetoptLong(
 #      "number=i", "Number of items, integer, mandatory option",
 #      "cutoff=f", "cutoff to filter results, optional, default (0.05)",
 #      "verbose",  "print messages"
-#  ), ncol = 2, byrow = TRUE))
-
-## ----eval = FALSE, echo = TRUE-------------------------------------------
-#  library(GetoptLong)
-#  
-#  cutoff = 0.05
-#  GetoptLong(c(
-#      "number=i", "Number of items, integer, mandatory option",
-#      "cutoff=f", "cutoff to filter results, optional, default (0.05)",
-#      "verbose",  "print messages"
-#  ))
+#  )
 
 ## ----eval = FALSE, echo = TRUE, results = 'makeup', highlight = FALSE----
 #  ~\> Rscript test.R --number 4 --cutoff 0.01 --verbose
@@ -33,12 +23,12 @@
 #  ~\> Rscript foo.R -l 1
 
 ## ----eval = FALSE, echo = TRUE-------------------------------------------
-#  GetoptLong.options('startingMsg' = '
-#  An example to show how to use the packages
+#  GetoptLong.options('startingMsg' =
+#  'An example to show how to use the packages
 #  ')
 #  
-#  GetoptLong.options('endingMsg' = '
-#  Please contact author@gmail.com for comments
+#  GetoptLong.options('endingMsg' =
+#  'Please contact author@gmail.com for comments
 #  ')
 #  VERSION = "0.0.1"
 #  GetoptLong(...)
@@ -58,7 +48,6 @@
 #    --version
 #      Print version information and exit
 #  
-#  
 #  Please contact author@gmail.com for comments
 
 ## ----eval = FALSE, echo = TRUE, results = 'makeup', highlight = FALSE----
@@ -75,7 +64,4 @@
 
 ## ----eval = FALSE, echo = TRUE, results = 'makeup', highlight = FALSE----
 #  ~\> Rscript test.R -a -b -c -- /your/perl/bin/perl
-
-## ----eval = FALSE, echo = TRUE-------------------------------------------
-#  source("test.R", argv = "--number 4 --cutoff 0.01 --verbose")
 

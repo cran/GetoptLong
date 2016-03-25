@@ -1,3 +1,6 @@
+## ----echo = FALSE--------------------------------------------------------
+suppressPackageStartupMessages(library(GetoptLong))
+
 ## ------------------------------------------------------------------------
 region = c(1, 2)
 value = 4
@@ -37,10 +40,19 @@ qq.options("cat_prefix" = "[DEBUG] ")
 qqcat("This is a message", cat_prefix = "[INFO] ")
 qqcat("This is a message")
 
-## ----eval = TRUE, results = 'hide', echo = FALSE-------------------------
+## ------------------------------------------------------------------------
+qq.options(LOCAL = TRUE)
+qq.options("cat_prefix" = "[INFO] ")
+qqcat("This is the first message")
+qqcat("This is the second message")
+qq.options(LOCAL = FALSE)
+qqcat("This is the third message")
+
+## ----eval = TRUE, results = 'hide', echo = TRUE--------------------------
 qq.options(RESET = TRUE)
 
 ## ----eval = FALSE--------------------------------------------------------
+#  library(GetoptLong)
 #  GetoptLong(c(
 #      "verbose", "Print message"
 #  ))

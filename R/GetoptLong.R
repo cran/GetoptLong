@@ -719,7 +719,7 @@ get_scriptname = function() {
     	f = gsub("^--file=(.*)$", "\\1", f[1])
     	return(f)	
     } else {
-    	return(NULL)
+    	return(GetoptLong.options("__script_name__"))
     }  
 }
 
@@ -796,6 +796,7 @@ is.dir = function(dir) {
 # Read R source code with arguments
 #
 # == param
+# -file file name
 # -... pass to `base::source`
 # -argv a string which contains command line arguments
 #
@@ -807,9 +808,11 @@ is.dir = function(dir) {
 # == author
 # Zuguang Gu <z.gu@dkfz.de>
 #
-source = function(..., argv = NULL) {
+source = function(file, ..., argv = NULL) {
 	GetoptLong.options("__argv_str__" = argv)
-	base::source(...)
+	GetoptLong.options("__script_name__" = file)
+	base::source(file, ...)
+	GetoptLong.options("__script_name__" = NULL)
 	GetoptLong.options("__argv_str__" = NULL)
 }
 

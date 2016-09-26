@@ -276,7 +276,7 @@ hr {
 
 <p><strong>Author</strong>: Zuguang Gu ( <a href="mailto:z.gu@dkfz.de">z.gu@dkfz.de</a> )</p>
 
-<p><strong>Date</strong>: 2016-08-13</p>
+<p><strong>Date</strong>: 2016-09-26</p>
 
 <hr/>
 
@@ -338,14 +338,14 @@ qqcat(&quot;This is a message&quot;)
 qqcat(&quot;This is a message&quot;)
 </code></pre>
 
-<pre><code>## [2016-08-13 23:32:27] This is a message
+<pre><code>## [2016-09-26 20:44:47] This is a message
 </code></pre>
 
 <pre><code class="r">Sys.sleep(2)
 qqcat(&quot;This is a message after 2 seconds&quot;)
 </code></pre>
 
-<pre><code>## [2016-08-13 23:32:29] This is a message after 2 seconds
+<pre><code>## [2016-09-26 20:44:49] This is a message after 2 seconds
 </code></pre>
 
 <pre><code class="r">qq.options(&quot;cat_prefix&quot; = &quot;&quot;)
@@ -435,6 +435,14 @@ qqcat(&quot;There @{ifelse(n == 1, &#39;is&#39;, &#39;are&#39;)} @{n} dog@{ifels
 </code></pre>
 
 <pre><code>## There are 2 dogs.
+</code></pre>
+
+<p>If the text is too long, by default, it will be wrapped into lines.</p>
+
+<pre><code class="r">qqcat(&quot;one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty.&quot;)
+</code></pre>
+
+<pre><code>## one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty.
 </code></pre>
 
 <p><strong>NOTE:</strong> Since <code>qq</code> as the function name is very easy to be used by other packages
@@ -676,11 +684,11 @@ writeLines(html, con = &quot;report.html&quot;)
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] GetoptLong_0.1.4 knitr_1.13       markdown_0.7.7  
+## [1] GetoptLong_0.1.5 knitr_1.14       markdown_0.7.7  
 ## 
 ## loaded via a namespace (and not attached):
 ## [1] rjson_0.2.15         magrittr_1.5         formatR_1.4          tools_3.2.3         
-## [5] GlobalOptions_0.0.10 stringi_1.0-1        stringr_1.0.0        mime_0.4            
+## [5] GlobalOptions_0.0.10 stringi_1.1.1        stringr_1.1.0        mime_0.5            
 ## [9] evaluate_0.9
 </code></pre>
 

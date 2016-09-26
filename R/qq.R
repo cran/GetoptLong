@@ -163,6 +163,8 @@ find_code = function(m, text) {
 # -labels      pass to `base::cat`
 # -append      pass to `base::cat`
 # -cat_prefix  prefix string. It is prior than ``qq.options(cat_prefix)``.
+# -strwrap     whether call `base::strwrap` to wrap the string
+# -strwrap_param parameters sent to `base::strwrap`, must be a list
 #
 # == details
 # This function is a shortcut of
@@ -196,8 +198,22 @@ find_code = function(m, text) {
 # qqcat("a = @{a}, b = '@{b}'\n")
 # qq.options(RESET = TRUE)
 qqcat = function(text, envir = parent.frame(), code.pattern = NULL, file = "",
-    sep = " ", fill = FALSE, labels = NULL, append = FALSE, cat_prefix = NULL) {
-	cat(qq(text, envir, code.pattern), file = file, sep = sep, fill = fill, labels = labels, append = append, cat_prefix = cat_prefix)
+    sep = " ", fill = FALSE, labels = NULL, append = FALSE, cat_prefix = NULL,
+    strwrap = FALSE, strwrap_param = list()) {
+	text = qq(text, envir, code.pattern)
+	if(strwrap) {
+		if(!inherits(strwrap_param, "list")) {
+			stop("`strwrap_param` must be a list.")
+		}
+		if(grepl("\n$", text)) {
+			text = paste(do.call("strwrap", c(strwrap_param, list(x = text))), collapse = "\n")
+			text = paste0(text, "\n")
+		} else {
+			text = paste(do.call("strwrap", c(strwrap_param, list(x = text))), collapse = "\n")
+		}
+		
+	}
+	cat(text, file = file, sep = sep, fill = fill, labels = labels, append = append, cat_prefix = cat_prefix)
 }
 
 cat = function(... , file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE, cat_prefix = NULL) {

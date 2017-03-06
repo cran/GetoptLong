@@ -81,6 +81,7 @@ n = 2
 qqcat("There @{ifelse(n == 1, 'is', 'are')} @{n} dog@{ifelse(n == 1, '', 's')}.\n")
 
 ## -------------------------------------------------------------------------------------------------
+qq.options("cat_strwrap" = TRUE)
 qqcat("one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty.")
 
 ## ---- eval = FALSE--------------------------------------------------------------------------------

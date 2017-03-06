@@ -3,12 +3,13 @@
 #
 # == param
 # -...     specification of options. The value should be a vector having even number of elements.
-# -help     whether to add help option
+# -help     whether to add help option. The help message is automatically generated according to user's specification of arguments.
 # -version  whether to add version option
 # -envir    user's enrivonment where `GetoptLong` will look for default values and export variables
 # -argv_str command-line arguments, only for testing purpose
 # -head head of the message when invoking ``Rscript foo.R --help``
 # -foot foot of the message when invoking ``Rscript foo.R --help``
+# -script_name alternative script name, internal use
 #
 # == details
 # Following shows a simple example. Put following code at the beginning of your script (e.g. ``foo.R``):
@@ -39,7 +40,7 @@
 # Zuguang Gu <z.gu@dkfz.de>
 #
 GetoptLong = function(..., help = TRUE, version = TRUE, envir = parent.frame(), argv_str = NULL,
-	head = NULL, foot = NULL) {
+	head = NULL, foot = NULL, script_name = NULL) {
 	
 	spec = list(...)
 
@@ -179,18 +180,36 @@ GetoptLong = function(..., help = TRUE, version = TRUE, envir = parent.frame(), 
 	if(version) {
 		spec2 = rbind(spec2, c("version", ""))
 	}
-	perl_script = generate_perl_script(spec2, json_file)
+	logical_var_with_default = NULL
+	logical_var_name = long_name[spec[, 1] == long_name | spec[, 1] == paste0(long_name, "!")]
+	if(length(logical_var_name)) {
+		l = sapply(logical_var_name, exists, envir = envir)
+		logical_var_name = logical_var_name[l]
+		if(length(logical_var_name)) {
+			logical_var_with_default = sapply(logical_var_name, function(x) {
+					x = get(x, envir = envir)
+					if(is.function(x)) {
+						return(FALSE)
+					} else {
+						res = as.logical(x)[1]
+						return(res)
+					}
+				})
+			names(logical_var_with_default) = logical_var_name
+		}
+	}
+	perl_script = generate_perl_script(spec2, json_file, logical_var_with_default)
 	
 	cmd = qq("\"@{perl_bin}\" \"@{perl_script}\" @{ARGV_string}")
 	res = system(cmd, intern = TRUE)
 	res = as.vector(res)
-	
+
 	# if you specified wrong arguments
 	if(length(res)) {
 		qqcat("@{res}\n", file = OUT)
 		
 		if(.IS_UNDER_COMMAND_LINE) {
-			print_help_msg(spec, file = OUT, help = TRUE, version = TRUE, head = head, foot = foot)
+			print_help_msg(spec, file = OUT, help = TRUE, version = TRUE, head = head, foot = foot, script_name = script_name)
 		}
 
 		ow = options("warn")[[1]]
@@ -216,7 +235,7 @@ GetoptLong = function(..., help = TRUE, version = TRUE, envir = parent.frame(), 
 	# if detect user has specified --help or --version
 	# basically, !is.null(opt$help) measn opt$help == 1
 	if(!is.null(opt$help) && opt$help) {
-		print_help_msg(spec, file = OUT, help = help, version = version, head = head, foot = foot)
+		print_help_msg(spec, file = OUT, help = help, version = version, head = head, foot = foot, script_name = script_name)
 		
 		if(.IS_UNDER_COMMAND_LINE) {
 			q(save = "no", status = 127)
@@ -248,7 +267,7 @@ GetoptLong = function(..., help = TRUE, version = TRUE, envir = parent.frame(), 
 		   (!exists(long_name[i], envir = envir) || class(get(long_name[i], envir = envir)) == "function")) {
 			qqcat("@{long_name[i]} is mandatory, please specify it.\n", file = OUT)
 			if(.IS_UNDER_COMMAND_LINE) {
-				print_help_msg(spec, file = OUT, help = help, version = version, head = head, foot = foot)
+				print_help_msg(spec, file = OUT, help = help, version = version, head = head, foot = foot, script_name = script_name)
 			}
 
 			if(.IS_UNDER_COMMAND_LINE) {
@@ -281,7 +300,7 @@ GetoptLong = function(..., help = TRUE, version = TRUE, envir = parent.frame(), 
 				if(!is.list(tmp)) {
 					qqcat("@{long_name[i]} is mandatory, and also detect in evoking environment you have already \ndefined `@{long_name[i]}`. Since it is defined as a named option, please\nmake sure default value of `@{long_name[i]}` is a list.\n", file = OUT)
 					if(.IS_UNDER_COMMAND_LINE) {
-						print_help_msg(spec, file = OUT, help = help, version = version, head = head, foot = foot)
+						print_help_msg(spec, file = OUT, help = help, version = version, head = head, foot = foot, script_name = script_name)
 					}
 
 					if(.IS_UNDER_COMMAND_LINE) {
@@ -294,7 +313,7 @@ GetoptLong = function(..., help = TRUE, version = TRUE, envir = parent.frame(), 
 				} else if(is.null(names(tmp))) {
 					qqcat("@{long_name[i]} is mandatory, and also detect in evoking environment you have already \ndefined `@{long_name[i]}`. Since it is defined as a named option, please\nmake sure default value of `@{long_name[i]}` is a list with names.\n", file = OUT)
 					if(.IS_UNDER_COMMAND_LINE) {
-						print_help_msg(spec, file = OUT, help = help, version = version, head = head, foot = foot)
+						print_help_msg(spec, file = OUT, help = help, version = version, head = head, foot = foot, script_name = script_name)
 					}
 
 					if(.IS_UNDER_COMMAND_LINE) {
@@ -321,7 +340,7 @@ GetoptLong = function(..., help = TRUE, version = TRUE, envir = parent.frame(), 
 			} else if(! is_simple_vector(tmp)) {
 				qqcat("@{long_name[i]} is mandatory, and also detect in evoking environment you have already \ndefined `@{long_name[i]}`. Please make sure default value of `@{long_name[i]}` should only be a simple vector or NULL.\n", file = OUT)
 				if(.IS_UNDER_COMMAND_LINE) {
-					print_help_msg(spec, file = OUT, help = help, version = version, head = head, foot = foot)
+					print_help_msg(spec, file = OUT, help = help, version = version, head = head, foot = foot, script_name = script_name)
 				}
 
 				if(.IS_UNDER_COMMAND_LINE) {
@@ -366,7 +385,7 @@ combine_and_escape_ARGV = function(ARGV) {
 	paste(ARGV, collapse = " ") 
 }
 
-generate_perl_script = function(spec, json_file) {
+generate_perl_script = function(spec, json_file, logical_var_with_default = NULL) {
 	perl_script = tempfile(fileext = ".pl")
 	#perl_script = "tmp.pl"
 	
@@ -399,12 +418,15 @@ generate_perl_script = function(spec, json_file) {
 	perl_code = c(perl_code, qq("use JSON;"))
 	perl_code = c(perl_code, qq("use Data::Dumper;"))
 	perl_code = c(perl_code, qq(""))
-	
+
 	# declare variables according to variable types
 	for (i in seq_len(nrow(spec))) {
-	
-		perl_code = c(perl_code, qq("my @{perl_sigil(var_type[i])}opt_@{i};    # var_type = @{var_type[i]}, opt_type = @{opt_type[i]}"))
 		
+		if(long_name[i] %in% names(logical_var_with_default)) {
+			perl_code = c(perl_code, qq("my @{perl_sigil(var_type[i])}opt_@{i} = @{ifelse(logical_var_with_default[long_name[i]], 1, 0)};    # var_type = @{var_type[i]}, opt_type = @{opt_type[i]}"))
+		} else {
+			perl_code = c(perl_code, qq("my @{perl_sigil(var_type[i])}opt_@{i};    # var_type = @{var_type[i]}, opt_type = @{opt_type[i]}"))
+		}
 	}
 	
 	perl_code = c(perl_code, qq("*STDERR = *STDOUT;")) # all write to STDOUT
@@ -475,7 +497,7 @@ generate_perl_script = function(spec, json_file) {
 	perl_code = c(perl_code, qq("open JSON, '>@{json_file}' or die 'Cannot create temp file: @{json_file}\\n';"))
 	perl_code = c(perl_code, qq("print JSON to_json($all_opt, {pretty => 1});"))
 	perl_code = c(perl_code, qq("close JSON;"))
-	#perl_code = c(perl_code, qq("print Dumper $all_opt;"))
+	# perl_code = c(perl_code, qq("print STDERR Dumper $all_opt;"))
 	
 	writeLines(perl_code, perl_script)
 	return(perl_script)
@@ -493,14 +515,14 @@ perl_sigil = function(type) {
 	}
 }
 
-print_help_msg = function(spec, file = stderr(), help = TRUE, version = TRUE, head = NULL, foot = NULL) {
+print_help_msg = function(spec, file = stderr(), help = TRUE, version = TRUE, head = NULL, foot = NULL, script_name = NULL) {
 	
 	# add help and version options in `spec`
 	if(help) {
-		spec = rbind(spec, c("help", "Print help message and exit"))
+		spec = rbind(spec, c("help", "Print help message and exit."))
 	}
 	if(version) {
-		spec = rbind(spec, c("version", "Print version information and exit"))
+		spec = rbind(spec, c("version", "Print version information and exit."))
 	}
 	
 	startingMsg = NULL
@@ -521,12 +543,14 @@ print_help_msg = function(spec, file = stderr(), help = TRUE, version = TRUE, he
 		cat_format_line(startingMsg, file = file)
 	}
 	
-    script_name = get_scriptname()
-    if(is.null(script_name)) {
-    	script_name = "foo.R"
-    } else {
-    	script_name = basename(script_name)
-    }
+	if(is.null(script_name)) {
+    	script_name = get_scriptname()
+	    if(is.null(script_name)) {
+	    	script_name = "foo.R"
+	    } else {
+	    	script_name = basename(script_name)
+	    }
+	}
     qqcat("Usage: Rscript @{script_name} [options]\n\n", file = file)
     	
 	for(i in seq_len(nrow(spec))) {
@@ -596,26 +620,36 @@ print_version_msg = function(envir, file = stderr()) {
 }
 
 cat_format_line = function(text, prefix = "", max.width = 70, file = stderr()) {
-	lines = strsplit(text, "\\n")[[1]]
-	
+	lines = strsplit(text, "\\n{2,}")[[1]]
+	lines = sapply(lines, function(t) {
+		paste(sapply(strsplit(t, "\\n")[[1]], function(x) gsub("^\\s+|\\s+$", "", x)), collapse = " ")
+	})
+	names(lines) = NULL
+	if(identical(lines, "")) {
+		return(NULL)
+	}
 	for(i in seq_along(lines)) {
 		words = strsplit(lines[i], "\\s+")[[1]]
-		
+
 		i_width = nchar(prefix)
 		cat(prefix, file = file)
-		for(i in seq_along(words)) {
-			if(i_width + 1 + nchar(words[i]) > max.width) {
+		for(j in seq_along(words)) {
+			if(i_width + 1 + nchar(words[j]) > max.width) {
 				cat("\n", file = file)
 				cat(prefix, file = file)
-				cat(words[i], file = file)
-				i_width = nchar(prefix) + nchar(words[i])
+				cat(words[j], file = file)
+				i_width = nchar(prefix) + nchar(words[j])
 			} else {
-				cat(ifelse(i == 1, "", " "), file = file)
-				qqcat("@{words[i]}", file = file)
-				i_width = i_width + nchar(prefix)
+				cat(ifelse(j == 1, "", " "), file = file)
+				qqcat("@{words[j]}", file = file)
+				i_width = i_width + nchar(words[j])
 			}
 		}
-		cat("\n", file = file)
+		if(i == length(lines)) {
+			cat("\n", file = file)
+		} else {
+			cat("\n\n", file = file)
+		}
 	}
 	cat("\n", file = file)
 }
@@ -722,7 +756,7 @@ export_parent_env = function(opt, envir = parent.frame()) {
 # ...
 #
 # == value
-# If the R script is not run under command-line, it return ``NULL``.
+# If the R script is not run from the command-line, it returns ``NULL``.
 #
 # == author
 # Zuguang Gu <z.gu@dkfz.de>

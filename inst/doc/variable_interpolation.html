@@ -276,7 +276,7 @@ hr {
 
 <p><strong>Author</strong>: Zuguang Gu ( <a href="mailto:z.gu@dkfz.de">z.gu@dkfz.de</a> )</p>
 
-<p><strong>Date</strong>: 2016-09-26</p>
+<p><strong>Date</strong>: 2017-03-06</p>
 
 <hr/>
 
@@ -338,14 +338,14 @@ qqcat(&quot;This is a message&quot;)
 qqcat(&quot;This is a message&quot;)
 </code></pre>
 
-<pre><code>## [2016-09-26 20:44:47] This is a message
+<pre><code>## [2017-03-06 17:09:59] This is a message
 </code></pre>
 
 <pre><code class="r">Sys.sleep(2)
 qqcat(&quot;This is a message after 2 seconds&quot;)
 </code></pre>
 
-<pre><code>## [2016-09-26 20:44:49] This is a message after 2 seconds
+<pre><code>## [2017-03-06 17:10:01] This is a message after 2 seconds
 </code></pre>
 
 <pre><code class="r">qq.options(&quot;cat_prefix&quot; = &quot;&quot;)
@@ -437,12 +437,14 @@ qqcat(&quot;There @{ifelse(n == 1, &#39;is&#39;, &#39;are&#39;)} @{n} dog@{ifels
 <pre><code>## There are 2 dogs.
 </code></pre>
 
-<p>If the text is too long, by default, it will be wrapped into lines.</p>
+<p>If the text is too long, it can be wrapped into lines.</p>
 
-<pre><code class="r">qqcat(&quot;one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty.&quot;)
+<pre><code class="r">qq.options(&quot;cat_strwrap&quot; = TRUE)
+qqcat(&quot;one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty.&quot;)
 </code></pre>
 
-<pre><code>## one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty.
+<pre><code>## one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen,
+## fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty.
 </code></pre>
 
 <p><strong>NOTE:</strong> Since <code>qq</code> as the function name is very easy to be used by other packages
@@ -530,12 +532,8 @@ and finally concatenated into a single long string.</p>
 qqcat(&quot;@{x} is an @{ifelse(x %% 2, &#39;odd&#39;, &#39;even&#39;)} number.\n&quot;)
 </code></pre>
 
-<pre><code>## 1 is an odd number.
-## 2 is an even number.
-## 3 is an odd number.
-## 4 is an even number.
-## 5 is an odd number.
-## 6 is an even number.
+<pre><code>## 1 is an odd number. 2 is an even number. 3 is an odd number. 4 is an even number. 5 is an
+## odd number. 6 is an even number.
 </code></pre>
 
 <pre><code class="r">y = c(&quot;a&quot;, &quot;b&quot;)
@@ -543,12 +541,7 @@ z = c(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;E&quot;)
 qqcat(&quot;@{x}, @{y}, @{z}\n&quot;)
 </code></pre>
 
-<pre><code>## 1, a, A
-## 2, b, B
-## 3, a, C
-## 4, b, D
-## 5, a, E
-## 6, b, A
+<pre><code>## 1, a, A 2, b, B 3, a, C 4, b, D 5, a, E 6, b, A
 </code></pre>
 
 <p>This feature is especially useful if you want to generate a report such as formatted in a HTML table:</p>
@@ -558,9 +551,7 @@ value = 1:4
 qqcat(&quot;&lt;tr&gt;&lt;td&gt;@{name}&lt;/td&gt;&lt;td&gt;@{value}&lt;/td&gt;&lt;tr&gt;\n&quot;)
 </code></pre>
 
-<pre><code>## &lt;tr&gt;&lt;td&gt;a&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;tr&gt;
-## &lt;tr&gt;&lt;td&gt;b&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;tr&gt;
-## &lt;tr&gt;&lt;td&gt;c&lt;/td&gt;&lt;td&gt;3&lt;/td&gt;&lt;tr&gt;
+<pre><code>## &lt;tr&gt;&lt;td&gt;a&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;tr&gt; &lt;tr&gt;&lt;td&gt;b&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;tr&gt; &lt;tr&gt;&lt;td&gt;c&lt;/td&gt;&lt;td&gt;3&lt;/td&gt;&lt;tr&gt;
 ## &lt;tr&gt;&lt;td&gt;d&lt;/td&gt;&lt;td&gt;4&lt;/td&gt;&lt;tr&gt;
 </code></pre>
 
@@ -653,19 +644,11 @@ writeLines(html, con = &quot;report.html&quot;)
 
 <p>You will get a report like:</p>
 
-<pre><code>&lt;html&gt;
-&lt;body&gt;
-&lt;h2&gt;Report for test&lt;/h2&gt;
-&lt;table&gt;
-&lt;tr&gt;&lt;th&gt;name&lt;/th&gt;&lt;th&gt;value&lt;/th&gt;&lt;/tr&gt;
-&lt;tr class=&quot;highlight&quot;&gt;&lt;td&gt;a&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;b&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;c&lt;/td&gt;&lt;td&gt;3&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;d&lt;/td&gt;&lt;td&gt;4&lt;/td&gt;&lt;/tr&gt;
+<pre><code>&lt;html&gt; &lt;body&gt; &lt;h2&gt;Report for test&lt;/h2&gt; &lt;table&gt; &lt;tr&gt;&lt;th&gt;name&lt;/th&gt;&lt;th&gt;value&lt;/th&gt;&lt;/tr&gt; &lt;tr
+class=&quot;highlight&quot;&gt;&lt;td&gt;a&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;/tr&gt; &lt;tr&gt;&lt;td&gt;b&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;c&lt;/td&gt;&lt;td&gt;3&lt;/td&gt;&lt;/tr&gt; &lt;tr&gt;&lt;td&gt;d&lt;/td&gt;&lt;td&gt;4&lt;/td&gt;&lt;/tr&gt;
 
-&lt;/table&gt;
-&lt;/body&gt;
-&lt;/html&gt;
+&lt;/table&gt; &lt;/body&gt; &lt;/html&gt;
 </code></pre>
 
 <h2 id="toc_6">Session info</h2>
@@ -673,9 +656,9 @@ writeLines(html, con = &quot;report.html&quot;)
 <pre><code class="r">sessionInfo()
 </code></pre>
 
-<pre><code>## R version 3.2.3 (2015-12-10)
+<pre><code>## R version 3.3.2 (2016-10-31)
 ## Platform: x86_64-apple-darwin13.4.0 (64-bit)
-## Running under: OS X 10.11.6 (El Capitan)
+## Running under: macOS Sierra 10.12.3
 ## 
 ## locale:
 ## [1] C/en_US.UTF-8/C/C/C/C
@@ -684,12 +667,11 @@ writeLines(html, con = &quot;report.html&quot;)
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] GetoptLong_0.1.5 knitr_1.14       markdown_0.7.7  
+## [1] GetoptLong_0.1.6 knitr_1.15.1     markdown_0.7.7  
 ## 
 ## loaded via a namespace (and not attached):
-## [1] rjson_0.2.15         magrittr_1.5         formatR_1.4          tools_3.2.3         
-## [5] GlobalOptions_0.0.10 stringi_1.1.1        stringr_1.1.0        mime_0.5            
-## [9] evaluate_0.9
+## [1] rjson_0.2.15         magrittr_1.5         tools_3.3.2          GlobalOptions_0.0.10
+## [5] stringi_1.1.2        stringr_1.1.0        mime_0.5             evaluate_0.10
 </code></pre>
 
 </body>

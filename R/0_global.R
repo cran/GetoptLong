@@ -7,20 +7,21 @@
 # -RESET Whether to reset options to their default values
 # -READ.ONLY only return read-only options?
 # -LOCAL switch local mode
+# -ADD add new options
 #
 # == detail
 # Supported options are following:
 #
-# -startingMsg message that will be printed before the helping message when running ``Rscript foo.R --help``. Ignored if ``head`` is set in `GetoptLong`
-# -endingMsg message that will be printed after the helping message when running ``Rscript foo.R --help``. Ignored if ``foot`` is set in `GetoptLong`
-# -config configuration of ``Getopt::Long``, check http://perldoc.perl.org/Getopt/Long.html#Configuring-Getopt\%3a\%3aLong
+# -``startingMsg`` message that will be printed before the helping message when running ``Rscript foo.R --help``. Ignored if ``head`` is set in `GetoptLong`
+# -``endingMsg`` message that will be printed after the helping message when running ``Rscript foo.R --help``. Ignored if ``foot`` is set in `GetoptLong`
+# -``config`` configuration of ``Getopt::Long``, check http://perldoc.perl.org/Getopt/Long.html#Configuring-Getopt\%3a\%3aLong
 #
 # ``GetoptLong.options(...)`` should be put before calling `GetoptLong` function.
 #
 # == author
 # Zuguang Gu <z.gu@dkfz.de>
 #
-GetoptLong.options = function(..., RESET = FALSE, READ.ONLY = NULL, LOCAL = FALSE) {}
+GetoptLong.options = function(..., RESET = FALSE, READ.ONLY = NULL, LOCAL = FALSE, ADD = FALSE) {}
 GetoptLong.options = setGlobalOptions(
 	startingMsg = list(.value = "",
 					   .length = 1),
@@ -45,14 +46,15 @@ GetoptLong.options = setGlobalOptions(
 # -RESET Whether to reset options to their default values
 # -READ.ONLY only return read-only options?
 # -LOCAL switch local mode
+# -ADD add new options
 #
 # == detail
 # Supported options are following:
 #
-# -cat_prefix prefix of the string which is printed by `qqcat`
-# -cat_verbose whether to print text by `qqcat`
-# -cat_strwrap whether call `base::strwrap` to wrap the string
-# -code.pattern code pattern for variable interpolation
+# -``cat_prefix`` prefix of the string which is printed by `qqcat`
+# -``cat_verbose`` whether to print text by `qqcat`
+# -``cat_strwrap`` whether call `base::strwrap` to wrap the string
+# -``code.pattern`` code pattern for variable interpolation
 #
 # == author
 # Zuguang Gu <z.gu@dkfz.de>
@@ -67,7 +69,7 @@ GetoptLong.options = setGlobalOptions(
 # qq.options(code.pattern = "`CODE`")
 # qqcat("a = `a`\n")
 # qq.options(RESET = TRUE)
-qq.options = function(..., RESET = FALSE, READ.ONLY = NULL, LOCAL = FALSE) {}
+qq.options = function(..., RESET = FALSE, READ.ONLY = NULL, LOCAL = FALSE, ADD = FALSE) {}
 qq.options = setGlobalOptions(
 	cat_prefix = list(.value = "",
 					  .length = c(0, 1),

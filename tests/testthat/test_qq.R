@@ -10,9 +10,9 @@ test_that("Simple test", {
 
 test_that("pass a list as an environment", {       
 	l = list(a = "a")
-	expect_that(qq("this is @{a} in `l`", env = l),
+	expect_that(qq("this is @{a} in `l`", envir = l),
 				equals("this is a in `l`"))
-	expect_that(qqcat("this is @{a} in `l`", env = l),
+	expect_that(qqcat("this is @{a} in `l`", envir = l),
 				prints_text("this is a in `l`"))
 })
 
@@ -97,7 +97,7 @@ test_that("test `cat_prefix`", {
 				prints_text("DEBUG:a"))
 	expect_that(qqcat("a", cat_prefix = function() "DEBUG:a"),
 				prints_text("DEBUG:a"))
-	expect_that(qqcat("a",),
+	expect_that(qqcat("a"),
 				prints_text("INFO:a"))
 	qq.options(RESET = TRUE)
 	
@@ -107,4 +107,13 @@ test_that("test `cat_prefix`", {
 	qq.options(cat_prefix = function() "INFO:")
 	op = qq.options(READ.ONLY = FALSE)
 	qq.options(op)
+})
+
+
+
+test_that("multiple template", {
+	a = 1
+	b = 2
+	expect_that(qq("a = @{a};", "b = @{b}"), equals("a = 1;b = 2"))
+	expect_that(qq("a = @{a};", "b = @{b}", sep = "\n"), equals("a = 1;\nb = 2"))
 })

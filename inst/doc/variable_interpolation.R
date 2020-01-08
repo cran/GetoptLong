@@ -84,6 +84,13 @@ qqcat("There @{ifelse(n == 1, 'is', 'are')} @{n} dog@{ifelse(n == 1, '', 's')}.\
 qq.options("cat_strwrap" = TRUE)
 qqcat("one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty.")
 
+## -------------------------------------------------------------------------------------------------
+a = 1; b = 2; c = 3
+txt = qq("command -a @{a}",
+         "        -b @{b}",
+         "        -c @{c}\n", sep = " \\\n")
+cat(txt)
+
 ## ---- eval = FALSE--------------------------------------------------------------------------------
 #  qq = GetoptLong::qq
 

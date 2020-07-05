@@ -1,11 +1,11 @@
 Package: GetoptLong
 Type: Package
 Title: Parsing Command-Line Arguments and Simple Variable Interpolation
-Version: 1.0.0
-Date: 2020-06-02
+Version: 1.0.1
+Date: 2020-07-05
 Author: Zuguang Gu
 Maintainer: Zuguang Gu <z.gu@dkfz.de>
-Depends: R (>= 3.6.0)
+Depends: R (>= 3.3.0)
 Imports: rjson, GlobalOptions (>= 0.1.0), methods, crayon
 Suggests: testthat (>= 1.0.0), knitr, markdown
 VignetteBuilder: knitr
@@ -15,7 +15,7 @@ Description: This is a command-line argument parser which wraps the
 URL: https://github.com/jokergoo/GetoptLong
 SystemRequirements: Perl, Getopt::Long
 License: MIT + file LICENSE
-Repository: CRAN
 NeedsCompilation: no
-Packaged: 2020-06-10 12:35:43 UTC; jokergoo
-Date/Publication: 2020-06-10 20:00:06 UTC
+Packaged: 2020-07-05 18:44:25 UTC; jokergoo
+Repository: CRAN
+Date/Publication: 2020-07-05 20:40:03 UTC

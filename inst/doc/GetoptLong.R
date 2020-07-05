@@ -319,3 +319,19 @@ GetoptLong.options("__argv_str__" = NULL)
 ## ---- eval = TRUE-------------------------------------------------------------
 sessionInfo()
 
+## ---- echo = FALSE, results = "asis"------------------------------------------
+is.solaris = function() {
+    grepl('SunOS',Sys.info()['sysname'])
+}
+
+if(!is.solaris()) {
+    invisible(knit("GetoptLong.Rmd2", "GetoptLong.md2"))
+}
+
+if(Sys.info()["user"] == "jokergoo") {
+    invisible(file.copy("GetoptLong.md2", "/Users/jokergoo/project/GetoptLong/vignettes/GetoptLong.md2", overwrite = TRUE))
+}
+
+ln = readLines("GetoptLong.md2")
+cat(paste(ln, collapse = "\n"))
+

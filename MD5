@@ -1,4 +1,4 @@
-c9cac691d865e95e6c33583149ba5447 *DESCRIPTION
+4480dda2a495603f8e1a4c2c602da9ef *DESCRIPTION
 1e583b908b576c0cb9491a4431ca1ccc *LICENSE
 d305405d3f2f6bf2bbb5ac921966fd91 *NAMESPACE
 b8c274c496bf19fbefd6b646b75aaba9 *NEWS
@@ -11,12 +11,12 @@ a4a906730958603ae686a06ab32eb00d *R/print.R
 8128af0cef0ce41b5accc2e2da5a066f *R/qq.R
 3ba92efffe97287bf5961ff5e55cd13b *README
 92bab674a079cbb58ee8cb1bea590e08 *build/vignette.rds
-6bd43b90f28b044b1fc174b97bc08473 *inst/doc/GetoptLong.R
-8453f938a6965fecd492991179f15491 *inst/doc/GetoptLong.Rmd
-91971419b450b30173253e5f377eeb5c *inst/doc/GetoptLong.html
+56c994757c0eddfb1ad7578803cafaff *inst/doc/GetoptLong.R
+7b3d07c5befc557ee6681095a589160b *inst/doc/GetoptLong.Rmd
+e782f3ab4ddc071893cdde0523553e9d *inst/doc/GetoptLong.html
 4116a9f730414d46ccc08930e457482e *inst/doc/variable_interpolation.R
 bad64b0346e04f69795d7bada7930f43 *inst/doc/variable_interpolation.Rmd
-dc68f0d52e6e781c8ce39b723243cba6 *inst/doc/variable_interpolation.html
+e85e8574a1439291fae1c18d6a07d339 *inst/doc/variable_interpolation.html
 33f6a227db992efd9e5758359253a0df *inst/extdata/perl_lib/JSON.pm
 4bc0f5bc988d96e7a4df896c49addc26 *inst/extdata/perl_lib/JSON/Syck.pm
 67fda3d4cbc96c2987d321d29f2d1284 *inst/extdata/perl_lib/JSON/XS.pm
@@ -38,7 +38,7 @@ d9520f927143e4d4b4d4c80807318c6d *man/source_script.Rd
 96910386ee7d659e1b873dd71e65ede4 *tests/testthat/test.R
 8d3b0d31c4b6e187089b26bc529ca9a2 *tests/testthat/test_GetoptLong.R
 a862fade493616e1b7ff521156763158 *tests/testthat/test_qq.R
-8453f938a6965fecd492991179f15491 *vignettes/GetoptLong.Rmd
+7b3d07c5befc557ee6681095a589160b *vignettes/GetoptLong.Rmd
 cbfa79e65d58bb752801877b704368d7 *vignettes/GetoptLong.Rmd2
 cebb488a47ec21fbf6c3684793828eee *vignettes/custom.css
 bad64b0346e04f69795d7bada7930f43 *vignettes/variable_interpolation.Rmd

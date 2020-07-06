@@ -11,7 +11,7 @@
 
 <meta name="author" content="Zuguang Gu (z.gu@dkfz.de)" />
 
-<meta name="date" content="2020-07-05" />
+<meta name="date" content="2020-07-06" />
 
 <title>Simple variable interpolation</title>
 
@@ -1525,7 +1525,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Simple variable interpolation</h1>
 <h4 class="author">Zuguang Gu (<a href="mailto:z.gu@dkfz.de" class="email">z.gu@dkfz.de</a>)</h4>
-<h4 class="date">2020-07-05</h4>
+<h4 class="date">2020-07-06</h4>
 
 </div>
 
@@ -1555,10 +1555,10 @@ qqcat(&quot;This is a message&quot;)</code></pre>
 <pre><code>## [INFO] This is a message</code></pre>
 <pre class="r"><code>qq.options(&quot;cat_prefix&quot; = function() format(Sys.time(), &quot;[%Y-%m-%d %H:%M:%S] &quot;))
 qqcat(&quot;This is a message&quot;)</code></pre>
-<pre><code>## [2020-07-05 20:44:22] This is a message</code></pre>
+<pre><code>## [2020-07-06 08:50:03] This is a message</code></pre>
 <pre class="r"><code>Sys.sleep(2)
 qqcat(&quot;This is a message after 2 seconds&quot;)</code></pre>
-<pre><code>## [2020-07-05 20:44:24] This is a message after 2 seconds</code></pre>
+<pre><code>## [2020-07-06 08:50:05] This is a message after 2 seconds</code></pre>
 <pre class="r"><code>qq.options(&quot;cat_prefix&quot; = &quot;&quot;)
 qqcat(&quot;This is a message&quot;)</code></pre>
 <pre><code>## This is a message</code></pre>
@@ -1687,7 +1687,7 @@ length(str)</code></pre>
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] markdown_1.1     GetoptLong_1.0.1 knitr_1.29      
+## [1] markdown_1.1     GetoptLong_1.0.2 knitr_1.29      
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] digest_0.6.25       crayon_1.3.4        magrittr_1.5        evaluate_0.14      

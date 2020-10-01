@@ -11,7 +11,7 @@
 
 <meta name="author" content="Zuguang Gu (z.gu@dkfz.de)" />
 
-<meta name="date" content="2020-07-06" />
+<meta name="date" content="2020-10-01" />
 
 <title>Parsing command-line arguments by Getopt::Long</title>
 
@@ -1525,14 +1525,14 @@ div.tocify {
 
 <h1 class="title toc-ignore">Parsing command-line arguments by Getopt::Long</h1>
 <h4 class="author">Zuguang Gu (<a href="mailto:z.gu@dkfz.de" class="email">z.gu@dkfz.de</a>)</h4>
-<h4 class="date">2020-07-06</h4>
+<h4 class="date">2020-10-01</h4>
 
 </div>
 
 
 <hr />
-<p>There are already several R packages which parse command-line arguments such as <a href="https://CRAN.R-project.org/package=getopt"><strong>getopt</strong></a>, <a href="https://CRAN.R-project.org/package=optparse"><strong>optparse</strong></a>, <a href="https://CRAN.R-project.org/package=argparse"><strong>argparse</strong></a>, <a href="https://CRAN.R-project.org/package=docopt"><strong>docopt</strong></a>. Here <strong>GetoptLong</strong> is another command-line argument parser (actually it was developed very early, <a href="https://cran.r-project.org/src/contrib/Archive/GetoptLong/">the first CRAN version</a> was in 2013) which wraps the powerful Perl module <a href="https://metacpan.org/pod/Getopt::Long"><code>Getopt::Long</code></a>. <strong>GetoptLong</strong> package also provides some adaptations for easier use in R.</p>
-<p>Using <strong>GetoptLong</strong> is simple especially for users having Perl experience (Oops, age exposed :)) because the specification is almost the same as in Perl. The original website of <a href="https://metacpan.org/pod/Getopt::Long"><code>Getopt::Long</code></a> is always your best reference.</p>
+<p>There are already several R packages which parse command-line arguments such as <a href="https://CRAN.R-project.org/package=getopt"><strong>getopt</strong></a>, <a href="https://CRAN.R-project.org/package=optparse"><strong>optparse</strong></a>, <a href="https://CRAN.R-project.org/package=argparse"><strong>argparse</strong></a>, <a href="https://CRAN.R-project.org/package=docopt"><strong>docopt</strong></a>. Here <strong>GetoptLong</strong> is another command-line argument parser (actually it was developed very early, <a href="https://cran.r-project.org/src/contrib/Archive/GetoptLong/">the first CRAN version</a> was in 2013) which wraps the powerful Perl module <a href="https://perldoc.pl/Getopt::Long"><code>Getopt::Long</code></a>. <strong>GetoptLong</strong> package also provides some adaptations for easier use in R.</p>
+<p>Using <strong>GetoptLong</strong> is simple especially for users having Perl experience (Oops, age exposed :)) because the specification is almost the same as in Perl. The original website of <a href="https://perldoc.pl/Getopt::Long"><code>Getopt::Long</code></a> is always your best reference.</p>
 <p><strong>Note: to use this package, Perl should be installed.</strong></p>
 <div id="workflow-of-the-wrapping" class="section level2">
 <h2>Workflow of the wrapping</h2>
@@ -2155,11 +2155,11 @@ print(verbose)</code></pre>
 <p>will print</p>
 <pre><code>[1] 1 2
 [1] 0.05
-$var1
-[1] &quot;a&quot;
-
 $var2
 [1] &quot;b&quot;
+
+$var1
+[1] &quot;a&quot;
 
 [1] TRUE</code></pre>
 <p>There are two ways to specify logical options, <em>e.g.</em>, <code>verbose</code> and <code>verbose!</code>. <code>verbose</code> always takes <code>FALSE</code> as default and you cannot set default value for it, while you can set default for <code>verbose!</code>. <em>E.g.</em>:</p>
@@ -2603,7 +2603,7 @@ GetoptLong.options(&quot;config&quot; = c(&quot;no_ignore_case&quot;, &quot;bund
 <p>With different configurations, it can support more types of option specifications:</p>
 <pre><code>-a -b -c  -abc
 -s 24 -s24 -s=24</code></pre>
-<p>Please refer to website of <a href="http://search.cpan.org/perldoc?Getopt%3A%3ALong#Configuring_Getopt%3A%3ALong"><code>Getopt::Long</code></a> for more information.</p>
+<p>Please refer to website of <a href="https://perldoc.pl/Getopt::Long"><code>Getopt::Long</code></a> for more information.</p>
 </div>
 <div id="specify-path-of-perl-in-command-line" class="section level2">
 <h2>Specify path of Perl in command line</h2>
@@ -2619,7 +2619,7 @@ GetoptLong.options(&quot;config&quot; = c(&quot;no_ignore_case&quot;, &quot;bund
 <div id="session-info" class="section level2">
 <h2>Session info</h2>
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 4.0.0 (2020-04-24)
+<pre><code>R version 4.0.2 (2020-06-22)
 Platform: x86_64-apple-darwin17.0 (64-bit)
 Running under: macOS Catalina 10.15.5
 
@@ -2634,14 +2634,14 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] GetoptLong_1.0.2 knitr_1.29      
+[1] GetoptLong_1.0.3 knitr_1.29      
 
 loaded via a namespace (and not attached):
- [1] compiler_4.0.0      rjson_0.2.20        magrittr_1.5       
- [4] htmltools_0.5.0     tools_4.0.0         GlobalOptions_0.1.2
+ [1] compiler_4.0.2      rjson_0.2.20        magrittr_1.5       
+ [4] htmltools_0.5.0     tools_4.0.2         GlobalOptions_0.1.2
  [7] yaml_2.2.1          crayon_1.3.4        stringi_1.4.6      
-[10] rmarkdown_2.2       stringr_1.4.0       digest_0.6.25      
-[13] xfun_0.15           rlang_0.4.6         evaluate_0.14      </code></pre>
+[10] rmarkdown_2.3       stringr_1.4.0       digest_0.6.25      
+[13] xfun_0.16           rlang_0.4.7         evaluate_0.14      </code></pre>
 <script>
 var elements = document.getElementsByTagName("pre");
 for(var i = 0; i < elements.length; i ++ ) {

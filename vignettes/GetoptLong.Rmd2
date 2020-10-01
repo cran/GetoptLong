@@ -19,13 +19,13 @@ as [**getopt**](https://CRAN.R-project.org/package=getopt),
 developed very early, [the first CRAN
 version](https://cran.r-project.org/src/contrib/Archive/GetoptLong/) was in
 2013) which wraps the powerful Perl module
-[`Getopt::Long`](https://metacpan.org/pod/Getopt::Long). **GetoptLong**
+[`Getopt::Long`](https://perldoc.pl/Getopt::Long). **GetoptLong**
 package also provides some adaptations for easier use in R.
 
 Using **GetoptLong** is simple especially for users having Perl experience (Oops, age
 exposed :)) because the specification is almost the same as in Perl. The
 original website of
-[`Getopt::Long`](https://metacpan.org/pod/Getopt::Long) is always
+[`Getopt::Long`](https://perldoc.pl/Getopt::Long) is always
 your best reference.
 
 **Note: to use this package, Perl should be installed.**
@@ -802,7 +802,7 @@ With different configurations, it can support more types of option specification
 -s 24 -s24 -s=24
 ```
 
-Please refer to website of [`Getopt::Long`](http://search.cpan.org/perldoc?Getopt%3A%3ALong#Configuring_Getopt%3A%3ALong)
+Please refer to website of [`Getopt::Long`](https://perldoc.pl/Getopt::Long)
 for more information.
 
 ## Specify path of Perl in command line

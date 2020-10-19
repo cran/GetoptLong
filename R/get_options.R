@@ -279,7 +279,7 @@ GetoptLong = function(..., help_head = NULL, help_foot = NULL, envir = parent.fr
 	for(opt_name in names(opt_json)) {
 		opt = opt_lt[[opt_name]]
 		if(opt$opt_type == "negatable_logical") {
-			if(!negatable_logical_is_called(opt_name, argv_str)) {
+			if(!negatable_logical_is_called(opt_name, ARGV_string)) {
 				opt$set_opt(NULL)
 			}
 		}

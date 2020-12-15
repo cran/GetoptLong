@@ -1,3 +1,9 @@
+Changes in version 1.0.5
+
+* fixed a bug when value contains space
+
+------------------------------------------------------------------
+
 Changes in version 1.0.4
 
 * fixed a bug of logical options (wrong variable was used)

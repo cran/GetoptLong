@@ -233,7 +233,7 @@ GetoptLong = function(..., help_head = NULL, help_foot = NULL, envir = parent.fr
 		}
 	}
 
-	cmd = qq("\"@{perl_bin}\" \"@{perl_script}\" @{ARGV_string}")
+	cmd = qq("\"@{perl_bin}\" \"@{perl_script}\" @{ARGV_string}");
 	res = system(cmd, intern = TRUE)
 	res = as.vector(res)
 
@@ -503,6 +503,14 @@ reformat_argv_string = function(opt_lt, argv) {
 			}
 		}
 	}
+
+	argv2 = sapply(argv2, function(x) {
+		if(grepl(" ", x)) {
+			x = paste0("'", x, "'")
+		} else {
+			x
+		}
+	})
 
 	paste(argv2, collapse = " ")
 }

@@ -120,11 +120,13 @@ test_that("test `verbose!`", {
 	verbose = TRUE
 	GetoptLong(spec, argv_str = ""); expect_that(verbose, equals(TRUE)); rm(verbose)
 	verbose = TRUE
-	GetoptLong(spec, argv_str = "-v"); expect_that(verbose, equals(TRUE)); rm(verbose)
+	GetoptLong(spec, argv_str = "--verbose"); expect_that(verbose, equals(TRUE)); rm(verbose)
 	verbose = FALSE
 	GetoptLong(spec, argv_str = "--verbose"); expect_that(verbose, equals(TRUE)); rm(verbose)
 	verbose = TRUE
 	GetoptLong(spec, argv_str = "--no-verbose"); expect_that(verbose, equals(FALSE)); rm(verbose)
+
+	GetoptLong(spec, argv_str = ""); expect_that(verbose, equals(FALSE)); rm(verbose)
 })
 
 
@@ -142,7 +144,7 @@ test_that("test `tag=i@`", {
 	expect_that(GetoptLong(spec, argv_str = ""),                prints_text("mandatory"))
 
 	tag = "a"
-	expect_error(GetoptLong(spec, argv_str = "--tag 1"), "must be number"); rm(tag)
+	expect_error(GetoptLong(spec, argv_str = "--tag 1"), "number"); rm(tag)
 
 	GetoptLong(spec, argv_str = "--tag 1 2"); expect_that(tag, equals(1:2)); rm(tag)
 	GetoptLong(spec, argv_str = "--t 1 2"); expect_that(tag, equals(1:2)); rm(tag)
@@ -172,9 +174,9 @@ test_that("test `tag=i%`", {
 	expect_that(GetoptLong(spec, argv_str = ""),          prints_text("mandatory"))
 	
 	expect_error({tag = 1;GetoptLong(spec, argv_str = "--tag name=1")}, "should be a list");rm(tag)
-	expect_error({tag = list(name = list(1));GetoptLong(spec, argv_str = "--tag name=1")}, "should be an atomic vector"); rm(tag)
+	expect_error({tag = list(name = list(1));GetoptLong(spec, argv_str = "--tag name=1")}, "atomic"); rm(tag)
 	expect_error({tag = list(1);GetoptLong(spec, argv_str = "--tag name=1")}, "should be a named list"); rm(tag)
-	expect_error({tag = list(name = "a");GetoptLong(spec, argv_str = "--tag name=1")}, "must be number"); rm(tag)	
+	expect_error({tag = list(name = "a");GetoptLong(spec, argv_str = "--tag name=1")}, "number"); rm(tag)	
 	expect_that({tag = list(name = 1);GetoptLong(spec, argv_str = "--tag name=s")}, prints_text("number expected")); rm(tag)	
 
 	tag = list(name = 2)
@@ -292,6 +294,9 @@ test_that("test `version` and `help` options", {
 
 	expect_that(GetoptLong(spec, argv_str = "--help", help_head = "test"), prints_text("test"))
 	expect_that(GetoptLong(spec, argv_str = "--help", help_foot = "test"), prints_text("test"))
+
+	VERSION = numeric_version("1.1-1")
+	expect_that(GetoptLong(spec, argv_str = "--version"), prints_text("1.1.1"))
 })
 
 perl_bin = Sys.which("perl")
@@ -352,3 +357,26 @@ test_that("test grouped options", {
     ), prints_text("Group1"))
 })
 
+
+test_that("test `multi-word option`", {
+	spec = c(
+		"foo_bar=i", "desc"
+	)
+	GetoptLong(spec, argv_str = "--foo_bar 1");       expect_that(foo_bar, equals(1));   rm(foo_bar)
+	GetoptLong(spec, argv_str = "--foo-bar 1");       expect_that(foo_bar, equals(1));   rm(foo_bar)
+
+	spec = c(
+		"foo_bar!", "desc"
+	)
+	GetoptLong(spec, argv_str = "--foo-bar");       expect_that(foo_bar, equals(TRUE));   rm(foo_bar)
+	GetoptLong(spec, argv_str = "--foo_bar");       expect_that(foo_bar, equals(TRUE));   rm(foo_bar)
+	GetoptLong(spec, argv_str = "--no-foo-bar");     expect_that(foo_bar, equals(FALSE));   rm(foo_bar)
+	GetoptLong(spec, argv_str = "--no-foo_bar");     expect_that(foo_bar, equals(FALSE));   rm(foo_bar)
+
+	spec = c(
+		"no_foo=i", "desc"
+	)
+	GetoptLong(spec, argv_str = "--no-foo 1");       expect_that(no_foo, equals(1));   rm(no_foo)
+	GetoptLong(spec, argv_str = "--no_foo 1");       expect_that(no_foo, equals(1));   rm(no_foo)
+
+})

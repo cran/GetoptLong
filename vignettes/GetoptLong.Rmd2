@@ -19,7 +19,7 @@ as [**getopt**](https://CRAN.R-project.org/package=getopt),
 developed very early, [the first CRAN
 version](https://cran.r-project.org/src/contrib/Archive/GetoptLong/) was in
 2013) which wraps the powerful Perl module
-[`Getopt::Long`](https://perldoc.pl/Getopt::Long). **GetoptLong**
+[`Getopt::Long`](https://metacpan.org/pod/Getopt::Long). **GetoptLong**
 package also provides some adaptations for easier use in R.
 
 Using **GetoptLong** is simple especially for users having Perl experience (Oops, age
@@ -365,8 +365,9 @@ Following table contains examples for each type of option specification:
 <tr class = "_odd"><td><code>--tag a</code></td><td><code>TRUE</code></td></tr>
 <tr class = "_odd"><td><code>--tag</code></td><td><code>TRUE</code></td></tr>
 <tr class = "_odd"><td>no argument</td><td><code>FALSE</code></td></tr>
-<tr class = "_even"><td rowspan=2 class="_first"><code>tag!</code></td><td><code>--tag</code></td><td><code>TRUE</code></td></tr>
+<tr class = "_even"><td rowspan=3 class="_first"><code>tag!</code></td><td><code>--tag</code></td><td><code>TRUE</code></td></tr>
 <tr class = "_even"><td><code>--no-tag</code></td><td><code>FALSE</code></td></tr>
+<tr class = "_even"><td>no argument, no default for <code>tag</code></td><td><code>FALSE</code></td></tr>
 <tr class = "_odd"><td rowspan=4 class="_first"><code>tag=i@</code></td><td><code>--tag 1</code></td><td><code>1</code></td></tr>
 <tr class = "_odd"><td><code>--tag 1 2</code></td><td><code>c(1, 2)</code></td></tr>
 <tr class = "_odd"><td><code>--tag 1 --tag 2</code></td><td><code>c(1, 2)</code></td></tr>
@@ -467,7 +468,7 @@ GetoptLong(
 print(as.list(opt))
 ```
 
-a calling from command-line:
+A calling from the command-line:
 
 ```
 Rscript foo.R --number 1 2 --param var1=a var2=b --verbose
@@ -479,6 +480,73 @@ will print
 chunks <- knitr:::knit_code$get()
 GetoptLong.options("__argv_str__" = "--number 1 2 --param var1=a var2=b --verbose")
 local({ eval(parse(text = chunks[["with_env"]])) })
+GetoptLong.options("__argv_str__" = NULL)
+```
+
+## Multi-word option name
+
+It also supports multiple words as an option name. Note, in the option specification, the name of the option
+should always be in the format of a valid R variable name, because it will be exported as a real variable. In the command line,
+you can use `-` to connect words and it will be converted to `_` internally. Check the following example:
+
+```{r multi_word, eval = FALSE}
+# or a default can be set for `bar_value`
+# bar_value = 2
+GetoptLong(
+    "bar_value=i", "Some value."
+)
+print(bar_value)
+```
+
+A calling from the command-line:
+
+```
+Rscript foo.R --bar-value 10
+```
+
+will print
+
+```{r, echo = FALSE}
+chunks <- knitr:::knit_code$get()
+GetoptLong.options("__argv_str__" = "--bar-value 1")
+local({ eval(parse(text = chunks[["multi_word"]])) })
+GetoptLong.options("__argv_str__" = NULL)
+```
+
+Of course, you can also specify the option by:
+
+```
+Rscript foo.R --bar_value 1
+```
+
+A second example of using multiple-word as a logical option name:
+
+```{r multi_word_logical, eval = FALSE}
+GetoptLong(
+    "show_messages!", "Whether to show messages?"
+)
+print(show_messages)
+```
+
+```
+Rscript foo.R --show-messages
+```
+
+```{r, echo = FALSE}
+chunks <- knitr:::knit_code$get()
+GetoptLong.options("__argv_str__" = "--show-messages")
+local({ eval(parse(text = chunks[["multi_word_logical"]])) })
+GetoptLong.options("__argv_str__" = NULL)
+```
+
+```
+Rscript foo.R --no-show-messages
+```
+
+```{r, echo = FALSE}
+chunks <- knitr:::knit_code$get()
+GetoptLong.options("__argv_str__" = "--no-show-messages")
+local({ eval(parse(text = chunks[["multi_word_logical"]])) })
 GetoptLong.options("__argv_str__" = NULL)
 ```
 
@@ -742,8 +810,7 @@ GetoptLong.options("__argv_str__" = NULL)
 ```
 
 If the option explanation lies in more than one lines, in front from the
-second line, you should add a tag in form of `<#tag>` where `tag` is the
-option name of the current option block, so that proper spaces in front of the
+second line, you should add enough spaces, so that proper spaces in front of the
 text can be calculated and the text will be properly aligned. See the
 following example:
 
@@ -752,11 +819,10 @@ GetoptLong("
 Usage: Rscript foo.R [options]
 
   <count=i{2,}> This is a count. This is a count. This is a count.
-  <#count> This is a count. This is a count.
+                This is a count. This is a count.
   <number=f> This is a number. This is a number. This is a number.
-  <#number> This is a number. This is a number.
-", template_control = list(opt_width = c(count = 28, number = 28))
-)
+             This is a number. This is a number.
+")
 ```
 
 ```{r, echo = FALSE}
@@ -786,6 +852,22 @@ GetoptLong(
 0.0.1
 ```
 
+You can also use `numeric_version()` to set the version:
+
+```{r version2, eval = FALSE}
+VERSION = numeric_version("1.1-1")
+GetoptLong(
+    "tag=i", "...", 
+)
+```
+
+
+```
+~\> Rscript foo.R --version
+1.1.1
+```
+
+
 ## Configuring Getopt::Long
 
 Configuration of `Getopt::Long` can be set by `GetoptLong.options("config")`:
@@ -802,7 +884,7 @@ With different configurations, it can support more types of option specification
 -s 24 -s24 -s=24
 ```
 
-Please refer to website of [`Getopt::Long`](https://perldoc.pl/Getopt::Long)
+Please refer to website of [`Getopt::Long`](https://metacpan.org/pod/Getopt::Long#Configuring_Getopt%3A%3ALong)
 for more information.
 
 ## Specify path of Perl in command line
@@ -839,6 +921,7 @@ for(var i = 0; i < elements.length; i ++ ) {
     if(!elements[i].hasAttribute("class")) {
         code = elements[i].children[0];
         code.style.color = "white";
+        code.style.background = "rgb(38,38,38)";
         elements[i].style.background = "hsl(70, 0%, 15%)";
     }
 }

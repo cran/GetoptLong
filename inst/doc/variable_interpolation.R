@@ -1,4 +1,4 @@
-## ---- echo = FALSE, message = FALSE---------------------------------------------------------------
+## ----echo = FALSE, message = FALSE----------------------------------------------------------------
 library(markdown)
 options(markdown.HTML.options = c(options('markdown.HTML.options')[[1]], "toc"))
 
@@ -60,7 +60,7 @@ qqcat("This is the second message")
 qq.options(LOCAL = FALSE)
 qqcat("This is the third message")
 
-## ---- eval = TRUE, results = 'hide', echo = TRUE--------------------------------------------------
+## ----eval = TRUE, results = 'hide', echo = TRUE---------------------------------------------------
 qq.options(RESET = TRUE)
 
 ## -------------------------------------------------------------------------------------------------
@@ -80,33 +80,33 @@ txt = qq("command -a @{a}",
          "        -c @{c}\n", sep = " \\\n")
 cat(txt)
 
-## ---- eval = FALSE--------------------------------------------------------------------------------
-#  qq = GetoptLong::qq
+## ----eval = FALSE---------------------------------------------------------------------------------
+# qq = GetoptLong::qq
 
 ## -------------------------------------------------------------------------------------------------
 x = 1
 qqcat("x = #{x}", code.pattern = "#\\{CODE\\}")
 
-## ---- eval = FALSE--------------------------------------------------------------------------------
-#  qq.options("code.pattern" = "#\\{CODE\\}")
+## ----eval = FALSE---------------------------------------------------------------------------------
+# qq.options("code.pattern" = "#\\{CODE\\}")
 
-## ---- eval = FALSE--------------------------------------------------------------------------------
-#  code.pattern = "@\\{CODE\\}"    # default style
-#  code.pattern = "@\\[CODE\\]"
-#  code.pattern = "@\\(CODE\\)"
-#  code.pattern = "%\\{CODE\\}"
-#  code.pattern = "%\\[CODE\\]"
-#  code.pattern = "%\\(CODE\\)"
-#  code.pattern = "\\$\\{CODE\\}"
-#  code.pattern = "\\$\\[CODE\\]"
-#  code.pattern = "\\$\\(CODE\\)"
-#  code.pattern = "#\\{CODE\\}"
-#  code.pattern = "#\\[CODE\\]"
-#  code.pattern = "#\\(CODE\\)"
-#  code.pattern = "\\[%CODE%\\]"  # Template Toolkit (Perl module) style :)
+## ----eval = FALSE---------------------------------------------------------------------------------
+# code.pattern = "@\\{CODE\\}"    # default style
+# code.pattern = "@\\[CODE\\]"
+# code.pattern = "@\\(CODE\\)"
+# code.pattern = "%\\{CODE\\}"
+# code.pattern = "%\\[CODE\\]"
+# code.pattern = "%\\(CODE\\)"
+# code.pattern = "\\$\\{CODE\\}"
+# code.pattern = "\\$\\[CODE\\]"
+# code.pattern = "\\$\\(CODE\\)"
+# code.pattern = "#\\{CODE\\}"
+# code.pattern = "#\\[CODE\\]"
+# code.pattern = "#\\(CODE\\)"
+# code.pattern = "\\[%CODE%\\]"  # Template Toolkit (Perl module) style :)
 
-## ---- eval = FALSE--------------------------------------------------------------------------------
-#  code.pattern = "`CODE`"
+## ----eval = FALSE---------------------------------------------------------------------------------
+# code.pattern = "`CODE`"
 
 ## -------------------------------------------------------------------------------------------------
 x = 1
